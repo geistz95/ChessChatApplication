@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {firebaseConfig} from './firebaseConfig';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {useCollectionData} from 'react-firebase-hooks/firestore'
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createStackNavigator();
+
+export default function ChatApp() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Sign-In" component={SignInScreen}/>
+        <Stack.Screen name="Home" componenet={HomeScreen}/>
+        <Stack.Screen name="UserScreen" component={UserProfile} />
+        <Stack.Screen name="Chatrooms" component={ChatRoomScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
